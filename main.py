@@ -44,6 +44,8 @@ try:
             cat[i]='V'
         if "preposition" in cat[i]:
             cat[i]='prep'
+        if 'conjunction' in cat[i]:
+            cat[i]='conj'
         i+=1
 #print(cat)
     i=0
@@ -94,6 +96,22 @@ try:
             #finsen=words[0]+" "+vp[0]
             del words[0]
             #del vp[0]
+    while len(np)==0 and len(pp)==0 and len(words)>=2 and 'conj' in cat:
+        #new=np[0]+" "+words[cat.index('conj')]+" "+np[1]
+        new=words[cat.index('PN')]+" "+words[cat.index('conj')]
+        del words[cat.index('PN')]
+        cat.remove('PN')
+        del words[cat.index('conj')]
+        cat.remove('conj')
+        if 'pro' in cat:
+            new=new+" "+words[cat.index('pro')]
+            del words[cat.index('pro')]
+            cat.remove('pro')
+        elif 'PN' in cat:
+            new=new+" "+words[cat.index('PN')]
+            del words[cat.index('PN')]
+            cat.remove('PN')
+        np.append(new)
     while len(pp)==0 and len(np)==1 and len(vp)==1 and len(words)==0:
         new=np[0]+" "+vp[0]
         del vp[0]
