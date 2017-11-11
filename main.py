@@ -1,12 +1,23 @@
 import subprocess
+import requests
+import json
+
+
 finsen=""
 np=list()
 pp=list()
 vp=list()
 #word=input("Enter a word:")
 def categorize(word):
-    cmd="curl -s \""+"http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5\" |python3 -mjson.tool | grep partOfSpeech > output.txt"
-    print( subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).stdout.read())
+    # cmd="curl -s \""+"http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5\" |python3 -mjson.tool | grep partOfSpeech > output.txt"
+    query = "http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"
+    r = requests.get(query);
+    # print(r.text);
+    json_data = json.loads(r.text);
+    print("For " + word + " partOfSpeech is " + json_data[0]["partOfSpeech"]);
+    return json_data[0]["partOfSpeech"];
+    # print( subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).stdout.read())
+
 cat=list()
 sentence=input("Enter a sentence:")#"Jim begged a book from Mary"
 words=sentence.split()
@@ -14,8 +25,9 @@ for word in words:
     if word=='a':
         cat.append('article')
     else:
-        categorize(word)
-        cat.append(open('output.txt', 'r').read())
+        cat.append(categorize(word))
+        # cat.append(open('output.txt', 'r').read())
+
 #print(cat)
 i=0
 try:
