@@ -1,22 +1,47 @@
 import subprocess
 import requests
 import json
-
+import pymysql
+pymysql.install_as_MySQLdb()
+import MySQLdb
 
 finsen=""
 np=list()
 pp=list()
 vp=list()
-#word=input("Enter a word:")
+
+
+db = MySQLdb.connect("localhost","root","password","NLP" )
+cursor = db.cursor()
+def QUERY(query):
+    try:
+        cursor.execute(query)
+        db.commit()
+    except (MySQLdb.Error, MySQLdb.Warning) as e:
+        print(e)
+        db.rollback()
+        print('error!!\nRolling back changes')
+        exit(0)
+
+
 def categorize(word):
-    # cmd="curl -s \""+"http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5\" |python3 -mjson.tool | grep partOfSpeech > output.txt"
-    query = "http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"
-    r = requests.get(query);
-    # print(r.text);
-    json_data = json.loads(r.text);
-    print("For " + word + " partOfSpeech is " + json_data[0]["partOfSpeech"]);
-    return json_data[0]["partOfSpeech"];
-    # print( subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).stdout.read())
+    query = "select * from list where word = '%s'"%word
+    QUERY(query)
+    if(cursor.rowcount==0):
+        url = "http://api.wordnik.com:80/v4/word.json/"+word+"/definitions?limit=1&includeRelated=true&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5"
+        r = requests.get(url);
+        # print(word)
+        json_data = json.loads(r.text);
+        # print("For " + word + " partOfSpeech is " + json_data[0]["partOfSpeech"]);
+        query="insert into list values('%s','%s')"%(word,json_data[0]["partOfSpeech"])
+        QUERY(query)
+        return json_data[0]["partOfSpeech"]; 
+    else:
+        query="select category from list where word='%s'"%(word)
+        QUERY(query)
+        result=cursor.fetchone()
+        return(result[0])
+
 
 cat=list()
 sentence=input("Enter a sentence:")#"Jim begged a book from Mary"
@@ -26,9 +51,7 @@ for word in words:
         cat.append('article')
     else:
         cat.append(categorize(word))
-        # cat.append(open('output.txt', 'r').read())
 
-#print(cat)
 i=0
 try:
     while i<len(cat):
@@ -47,7 +70,6 @@ try:
         if 'conjunction' in cat[i]:
             cat[i]='conj'
         i+=1
-#print(cat)
     i=0
     while i<len(words):
         print(words[i]+"->"+cat[i])
@@ -129,3 +151,5 @@ print("remaining words:")
 print(words)
 print("Original sentence: "+sentence)
 print("Final sentence   : "+finsen)
+
+db.close()
