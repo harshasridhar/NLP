@@ -5,26 +5,27 @@ The aim of the mini-project is to build a program that takes ***a jumbled senten
 
 
 ## Pre-requisites
+ - NodeJS and npm
  - Python 3 with the following packages
- 	- requests
- 	- json
- 	- MySQLdb
- - mySql
+   - requests
+   - json
+   - mysqlclient
+   - pymysql
+ - MySQL
  	- Database name - NLP
  	- Table Name - LIST
  		- Attributes : word varchar(20) ; category varchar(25)
 
-## Installing python packages
-If pip3 is not installed
+## Running the project
 ```
- sudo apt install python3-pip
-```
-```
-sudo pip3 install requests
+ git clone https://github.com/harshasridhar/NLP.git
 ```
 ```
-sudo pip3 install json
+ cd NLP
 ```
 ```
-sudo apt-get install libmysqlclient-dev
+ npm install
+```
+```
+ npm start
 ```
