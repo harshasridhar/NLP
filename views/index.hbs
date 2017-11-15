@@ -1,0 +1,38 @@
+<center>
+	<div>
+		<input type="text" id="sentence">
+		<button id="enter" class="uk-button uk-button-primary uk-button-large">Press Enter</button>
+	</div>
+	<br>
+	<div>
+		<p></p>
+		<button id="hid" style="display:none;" class="uk-button uk-button-primary uk-button-large">Press Enter</button>
+	</div>
+</center>
+
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+	$(document).ready(function(){
+		var socket = io();
+		$("#sentence").focus();
+
+		$("#sentence").keypress(function(e){
+			if(e.which == 13){
+				// alert("here");
+				$("#enter").click();
+			}
+		});
+
+		$("#enter").click(function(){
+			// alert("button pressed");
+			var t = $("#sentence").val();
+			socket.emit("correct_request", t);
+		});
+
+		socket.on("correct_response", function(s){
+			$('p').text(s);
+		});
+	});
+</script>

@@ -1,0 +1,53 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 90vh !important;
+  background-color: #1E4147;
+  overflow: hidden;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#sentence{
+	font-size: 50px;
+	background-color: transparent;
+	margin-top:180px;
+	border: none;
+	width: 800px;
+	border-bottom: 3px solid #AAC789;
+	outline:none;
+	font-family: 'Inconsalata', monospace !important;
+	font-weight: bold;
+	color : #fff;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+p{
+	font-size: 30px;
+	background-color: transparent;
+	margin-top:100px !important;
+	border: none;
+	/*width: 800px;*/
+	/*border-bottom: 3px solid #AAC789;*/
+	/*outline:none;*/
+	font-family: 'Inconsalata', monospace !important;
+	font-weight: bold;
+	color : #fff;
+	margin-right: 80px !important;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+
+#enter{
+	margin : 20px;
+	margin-bottom: 30px;
+	font-family: 'Inconsalata', monospace !important;
+	background-color: #437356;
+}
+/*#sentence:click{
+	border: 2px solid #fff;
+}*/

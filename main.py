@@ -4,12 +4,16 @@ import json
 import pymysql
 pymysql.install_as_MySQLdb()
 import MySQLdb
+from sys import argv
 
 finsen=""
 np=list()
 pp=list()
 vp=list()
 
+# print(argv)
+if len(argv) is 1:
+    exit()
 
 db = MySQLdb.connect("localhost","root","password","NLP" )
 cursor = db.cursor()
@@ -44,7 +48,8 @@ def categorize(word):
 
 
 cat=list()
-sentence=input("Enter a sentence:")#"Jim begged a book from Mary"
+# sentence=input("Enter a sentence:")#"Jim begged a book from Mary"
+sentence = argv[1]
 words=sentence.split()
 for word in words:
     if word=='a':
@@ -72,7 +77,7 @@ try:
         i+=1
     i=0
     while i<len(words):
-        print(words[i]+"->"+cat[i])
+        # print(words[i]+"->"+cat[i])
         i+=1
     while 'N' in cat:
         new=words[cat.index('N')]
@@ -141,15 +146,15 @@ try:
         finsen+=new
 except:
     pass
-print("Noun Phrases:")
-print(np)
-print("Prep Phrases:")
-print(pp)
-print("Verb Phrases:")
-print(vp)
-print("remaining words:")
-print(words)
-print("Original sentence: "+sentence)
-print("Final sentence   : "+finsen)
-
+# print("Noun Phrases:")
+# print(np)
+# print("Prep Phrases:")
+# print(pp)
+# print("Verb Phrases:")
+# print(vp)
+# print("remaining words:")
+# print(words)
+# print("Original sentence: "+sentence)
+# print("Final sentence   : "+finsen)
+print(finsen)
 db.close()
