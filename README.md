@@ -1,4 +1,5 @@
 # Mini Project on Natural Language Processing
+![jumbled example](public/images/screenshot.jpeg?raw=true "example")
 
 ## Introduction
 The aim of the mini-project is to build a program that takes ***a jumbled sentence with incorrect grammer*** and gives out a ***grammatically correct rearranged sentence*** 
